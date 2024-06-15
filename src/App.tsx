@@ -1,6 +1,4 @@
-import { useState } from "react";
-
-import styles from "./App.module.css";
+// import styles from "./App.module.css";
 import { AddNewApartment } from "./components/AddNewApartment";
 
 function App() {
