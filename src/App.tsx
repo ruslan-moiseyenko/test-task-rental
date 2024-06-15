@@ -3,7 +3,7 @@ import { useEffect, useState, createContext } from "react";
 import { AddNewApartment } from "./components/AddNewApartment";
 import { getLocalStorageData } from "./utils/helpers";
 import { RoomData } from "./types/types";
-import { Apartment } from "./components/Apartment";
+import { ApartmentsList } from "./components/ApartmentsList";
 
 export interface AppContextType {
   data: RoomData[];
@@ -14,6 +14,7 @@ export const AppContext = createContext<AppContextType | null>(null);
 
 function App() {
   const [data, setData] = useState<RoomData[]>([]);
+  console.log("🚀 ~ App ~ data:", data);
 
   useEffect(() => {
     const localData = getLocalStorageData();
@@ -25,13 +26,8 @@ function App() {
       <main>
         <h1>Apartments Marketplace</h1>
         <AddNewApartment />
-        <Apartment
-          data={data[0] || {}}
-          primaryButtonText="Rent"
-          secondaryButtonText="Delete"
-          onPrimaryButtonClick={() => {}}
-          onSecondaryButtonClick={() => {}}
-        />
+
+        <ApartmentsList data={data} />
       </main>
     </AppContext.Provider>
   );

@@ -1,13 +1,13 @@
 import React, { FC } from "react";
 import styles from "./styles.module.css";
 
-type ButtoProps = {
+type ButtonProps = {
   children: React.ReactNode;
   onClick: () => void;
   isPrimary?: boolean;
 };
 
-export const Button: FC<ButtoProps> = ({
+export const Button: FC<ButtonProps> = ({
   isPrimary = true,
   onClick,
   children

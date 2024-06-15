@@ -5,9 +5,12 @@ import { Button } from "../Button";
 
 type Apartment = {
   data: RoomData;
-  primaryButtonText: string;
-  onPrimaryButtonClick: () => void;
-} & { secondaryButtonText: string; onSecondaryButtonClick: () => void };
+  primaryButtonText?: string;
+  onPrimaryButtonClick?: () => void;
+  secondaryButtonText?: string;
+  onSecondaryButtonClick?: () => void;
+};
+
 export const Apartment: React.FC<Apartment> = ({
   data,
   primaryButtonText,
@@ -28,7 +31,10 @@ export const Apartment: React.FC<Apartment> = ({
         <span>Numbers of rooms: </span>
         {rooms}
       </p>
-      <Button onClick={onPrimaryButtonClick}>{primaryButtonText}</Button>
+      {primaryButtonText && onPrimaryButtonClick && (
+        <Button onClick={onPrimaryButtonClick}>{primaryButtonText}</Button>
+      )}
+
       {onSecondaryButtonClick && (
         <Button isPrimary={false} onClick={onSecondaryButtonClick}>
           {secondaryButtonText}

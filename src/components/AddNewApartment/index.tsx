@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { nanoid } from "nanoid";
 import styles from "./styles.module.css";
-import { updateLocalStorageData } from "../../utils/helpers";
+import { addLocalStorageData } from "../../utils/helpers";
 import { FormData, RoomData } from "../../types/types";
 import { AppContext, AppContextType } from "../../App";
 
@@ -28,7 +28,7 @@ export const AddNewApartment = () => {
       ...data
     };
 
-    updateLocalStorageData(newApartment);
+    addLocalStorageData(newApartment);
     setData((prevData: RoomData[]) => [...prevData, newApartment]);
     reset();
   };
