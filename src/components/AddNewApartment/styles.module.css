@@ -1,17 +1,17 @@
 .container {
   display: flex;
-  gap: 20px;
+  flex-direction: column;
+  gap: 10px;
 
   justify-content: center;
-  align-items: end;
+  align-items: start;
   width: 100%;
   padding: 20px;
   background-color: aliceblue;
-  outline: auto;
 }
 
 .inputContainer {
-  flex: 4;
+  flex: 1;
 }
 
 .label {
@@ -30,9 +30,17 @@
   }
 }
 
+.description {
+  width: 50%;
+}
+
 .days {
-  /* flex-shrink: 1; */
   width: 60px;
+}
+
+.details {
+  display: flex;
+  gap: 20px;
 }
 
 .button {
