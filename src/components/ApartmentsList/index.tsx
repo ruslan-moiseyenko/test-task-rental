@@ -1,7 +1,7 @@
 import React, { FC, useContext } from "react";
 import { RoomData } from "../../types/types";
 import { Apartment } from "../Apartment";
-import { removeLocalStorageData } from "../../utils/helpers";
+import { removeLocalStorageDataById } from "../../utils/helpers";
 import { AppContext, AppContextType } from "../../App";
 
 type ApartmentsListProps = {
@@ -9,7 +9,9 @@ type ApartmentsListProps = {
 };
 
 export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
-  const { setData } = useContext(AppContext!) as AppContextType;
+  const { setFreeApartments, setRentedApartments } = useContext(
+    AppContext!
+  ) as AppContextType;
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("asc");
 
   {
@@ -18,19 +20,29 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
   const handleSorting = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.value === "asc") {
       const sortedData = data.sort((a, b) => a.price - b.price);
-      setData(sortedData);
+      setFreeApartments(sortedData);
       setSortOrder("asc");
     } else {
       const sortedData = data.sort((a, b) => b.price - a.price);
-      setData(sortedData);
+      setFreeApartments(sortedData);
       setSortOrder("desc");
     }
   };
 
   const handleRemove = (id: string) => {
-    removeLocalStorageData(id);
-    setData((prevData) => prevData.filter((item) => item.id !== id));
+    removeLocalStorageDataById(id);
+    setFreeApartments((prevData) => prevData.filter((item) => item.id !== id));
   };
+
+  const handleRented = (id: string) => {
+    setRentedApartments((prevData) => [
+      ...prevData,
+      data.find((item) => item.id === id)!
+    ]);
+    removeLocalStorageDataById(id);
+    setFreeApartments((prevData) => prevData.filter((item) => item.id !== id));
+  };
+
   return (
     <div>
       <h2>Available Apartments ({data.length})</h2>
@@ -44,7 +56,7 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
           key={item.id}
           data={item || {}}
           primaryButtonText="Rent"
-          onPrimaryButtonClick={() => {}}
+          onPrimaryButtonClick={() => handleRented(item.id)}
           secondaryButtonText="Delete"
           onSecondaryButtonClick={() => handleRemove(item.id)}
         />

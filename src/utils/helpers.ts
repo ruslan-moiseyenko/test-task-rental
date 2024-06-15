@@ -17,7 +17,7 @@ export const getLocalStorageData = (): RoomData[] => {
   return parsedData;
 };
 
-export const removeLocalStorageData = (id: string) => {
+export const removeLocalStorageDataById = (id: string) => {
   const localData = localStorage.getItem(key);
   const parsedData = localData ? JSON.parse(localData) : [];
   const newData = parsedData.filter((item: RoomData) => item.id !== id);

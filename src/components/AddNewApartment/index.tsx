@@ -13,7 +13,7 @@ const daysOptions = [
 ];
 
 export const AddNewApartment = () => {
-  const { setData } = useContext(AppContext!) as AppContextType;
+  const { setFreeApartments } = useContext(AppContext!) as AppContextType;
 
   const {
     handleSubmit,
@@ -29,7 +29,7 @@ export const AddNewApartment = () => {
     };
 
     addLocalStorageData(newApartment);
-    setData((prevData: RoomData[]) => [...prevData, newApartment]);
+    setFreeApartments((prevData: RoomData[]) => [...prevData, newApartment]);
     reset();
   };
 
