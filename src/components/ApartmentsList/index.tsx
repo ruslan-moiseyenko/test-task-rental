@@ -12,6 +12,9 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
   const { setData } = useContext(AppContext!) as AppContextType;
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("asc");
 
+  {
+    sortOrder;
+  }
   const handleSorting = (event: React.ChangeEvent<HTMLSelectElement>) => {
     if (event.target.value === "asc") {
       const sortedData = data.sort((a, b) => a.price - b.price);

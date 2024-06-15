@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import { useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { nanoid } from "nanoid";
 import styles from "./styles.module.css";
