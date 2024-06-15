@@ -14,7 +14,6 @@ export const AppContext = createContext<AppContextType | null>(null);
 
 function App() {
   const [data, setData] = useState<RoomData[]>([]);
-  console.log("🚀 ~ App ~ data:", data);
 
   useEffect(() => {
     const localData = getLocalStorageData();
