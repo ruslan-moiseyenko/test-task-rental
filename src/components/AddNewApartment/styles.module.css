@@ -3,11 +3,20 @@
   flex-direction: column;
   gap: 10px;
 
+  border-width: 1px;
+  border-style: solid;
+  border-color: var(--border-color);
+  border-radius: 4px;
+
   justify-content: center;
   align-items: start;
   width: 100%;
   padding: 20px;
   background-color: aliceblue;
+}
+
+.title {
+  margin-bottom: 20px;
 }
 
 .inputContainer {
@@ -56,5 +65,5 @@
 }
 
 .price {
-  flex: 1;
+  margin-bottom: 20px;
 }

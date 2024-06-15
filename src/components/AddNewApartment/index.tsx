@@ -2,7 +2,7 @@ import { useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { nanoid } from "nanoid";
 import styles from "./styles.module.css";
-import { addLocalStorageData } from "../../utils/helpers";
+// import { addLocalStorageData } from "../../utils/helpers";
 import { FormData, RoomData } from "../../types/types";
 import { AppContext, AppContextType } from "../../App";
 
@@ -28,13 +28,14 @@ export const AddNewApartment = () => {
       ...data
     };
 
-    addLocalStorageData(newApartment);
+    // addLocalStorageData(newApartment);
     setFreeApartments((prevData: RoomData[]) => [...prevData, newApartment]);
     reset();
   };
 
   return (
     <section>
+      <h2 className={styles.title}>Add new apartment</h2>
       <form className={styles.container} onSubmit={handleSubmit(onSubmit)}>
         <div className={styles.inputContainer}>
           <label htmlFor="title" className={styles.label}>

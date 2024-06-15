@@ -1,7 +1,6 @@
 import React, { FC, useContext } from "react";
 import { RoomData } from "../../types/types";
 import { Apartment } from "../Apartment";
-import { removeLocalStorageDataById } from "../../utils/helpers";
 import { AppContext, AppContextType } from "../../App";
 
 type ApartmentsListProps = {
@@ -30,7 +29,6 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
   };
 
   const handleRemove = (id: string) => {
-    removeLocalStorageDataById(id);
     setFreeApartments((prevData) => prevData.filter((item) => item.id !== id));
   };
 
@@ -39,7 +37,6 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
       ...prevData,
       data.find((item) => item.id === id)!
     ]);
-    removeLocalStorageDataById(id);
     setFreeApartments((prevData) => prevData.filter((item) => item.id !== id));
   };
 

@@ -1,7 +1,10 @@
-// import styles from "./App.module.css";
+import styles from "./App.module.css";
 import { useEffect, useState, createContext } from "react";
 import { AddNewApartment } from "./components/AddNewApartment";
-import { getLocalStorageData } from "./utils/helpers";
+import {
+  getLocalStorageData,
+  getLocalStorageRentedData
+} from "./utils/helpers";
 import { RoomData } from "./types/types";
 import { ApartmentsList } from "./components/ApartmentsList";
 import { RentedApartmentsList } from "./components/RentedApartmentsList";
@@ -21,8 +24,19 @@ function App() {
 
   useEffect(() => {
     const localData = getLocalStorageData();
-    if (localData) setFreeApartments(localData);
+    if (localData.length > 0) setFreeApartments(localData);
+
+    const rentedData = getLocalStorageRentedData();
+    if (rentedData.length > 0) setRentedApartments(rentedData);
   }, []);
+
+  useEffect(() => {
+    localStorage.setItem("rentedApartments", JSON.stringify(rentedApartments));
+  }, [rentedApartments]);
+
+  useEffect(() => {
+    localStorage.setItem("apartments", JSON.stringify(freeApartments));
+  }, [freeApartments]);
 
   return (
     <AppContext.Provider
@@ -34,7 +48,7 @@ function App() {
       }}
     >
       <main>
-        <h1>Apartments Marketplace</h1>
+        <h1 className={styles.title}>Apartments Marketplace</h1>
         <AddNewApartment />
         <RentedApartmentsList />
 
