@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { nanoid } from "nanoid";
 import styles from "./styles.module.css";
-import { updateLocalData } from "../../utils/helpers";
+import { updateLocalStorageData } from "../../utils/helpers";
 import { FormData, RoomData } from "../../types/types";
+import { AppContext, AppContextType } from "../../App";
 
 const daysOptions = [
   { value: 1, label: "1" },
@@ -12,21 +13,24 @@ const daysOptions = [
 ];
 
 export const AddNewApartment = () => {
+  const { setData } = useContext(AppContext!) as AppContextType;
+
   const {
     handleSubmit,
-    register
+    register,
+    reset
     // formState: { errors }
   } = useForm<FormData>();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
-
     const newApartment: RoomData = {
       id: nanoid(),
       ...data
     };
 
-    updateLocalData(newApartment);
+    updateLocalStorageData(newApartment);
+    setData((prevData: RoomData[]) => [...prevData, newApartment]);
+    reset();
   };
 
   return (
@@ -53,7 +57,7 @@ export const AddNewApartment = () => {
             {...register("description", { required: true })}
             name="description"
             className={styles.input}
-            placeholder="4"
+            placeholder="Some words about the apartment..."
           />
         </div>
 
