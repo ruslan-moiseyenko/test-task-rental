@@ -1,0 +1,52 @@
+.container {
+  display: flex;
+  gap: 20px;
+
+  justify-content: center;
+  align-items: end;
+  width: 100%;
+  padding: 20px;
+  background-color: aliceblue;
+  outline: auto;
+}
+
+.inputContainer {
+  flex: 4;
+}
+
+.label {
+  font-size: 12px;
+}
+
+.input {
+  width: 100%;
+  padding: 9px 6px;
+  appearance: none;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+
+  &::placeholder {
+    color: var(--border-color);
+  }
+}
+
+.days {
+  /* flex-shrink: 1; */
+  width: 60px;
+}
+
+.button {
+  background-color: var(--mint-color);
+  color: white;
+}
+
+.select {
+  width: 100%;
+  padding: 9px 6px;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+}
+
+.price {
+  flex: 1;
+}
