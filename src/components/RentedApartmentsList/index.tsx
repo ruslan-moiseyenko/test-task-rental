@@ -19,19 +19,28 @@ export const RentedApartmentsList = () => {
       prevData.filter((item) => item.id !== id)
     );
   };
+
+  const renderList = () => {
+    return (
+      <>
+        <div className={styles.apartmentsWrapper}>
+          {rentedApartments.map((item) => (
+            <Apartment
+              key={item.id}
+              data={item}
+              secondaryButtonText="Cancel rent"
+              onSecondaryButtonClick={() => handleCancelRent(item.id)}
+            />
+          ))}
+        </div>
+      </>
+    );
+  };
+
   return (
     <div className={styles.container}>
-      <h2>Rented Apartments</h2>
-      <div className={styles.apartmentsWrapper}>
-        {rentedApartments.map((item) => (
-          <Apartment
-            key={item.id}
-            data={item}
-            secondaryButtonText="Cancel rent"
-            onSecondaryButtonClick={() => handleCancelRent(item.id)}
-          />
-        ))}
-      </div>
+      <h2 className={styles.title}>Rented Apartments</h2>
+      {rentedApartments?.length ? renderList() : <p>No data</p>}
     </div>
   );
 };

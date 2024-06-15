@@ -3,6 +3,8 @@ import { RoomData } from "../../types/types";
 import { Apartment } from "../Apartment";
 import { AppContext, AppContextType } from "../../App";
 
+import styles from "./styles.module.css";
+
 type ApartmentsListProps = {
   data: RoomData[];
 };
@@ -40,24 +42,37 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
     setFreeApartments((prevData) => prevData.filter((item) => item.id !== id));
   };
 
-  return (
-    <div>
-      <h2>Available Apartments ({data.length})</h2>
+  const renderList = () => {
+    return (
+      <div className={styles.listWrapper}>
+        {data.map((item) => (
+          <Apartment
+            key={item.id}
+            data={item || {}}
+            primaryButtonText="Rent"
+            onPrimaryButtonClick={() => handleRented(item.id)}
+            secondaryButtonText="Delete"
+            onSecondaryButtonClick={() => handleRemove(item.id)}
+          />
+        ))}
+      </div>
+    );
+  };
 
-      <select onChange={handleSorting}>
-        <option value="asc">Price: Cheapest first</option>
-        <option value="desc">Price: Highest first</option>
-      </select>
-      {data.map((item) => (
-        <Apartment
-          key={item.id}
-          data={item || {}}
-          primaryButtonText="Rent"
-          onPrimaryButtonClick={() => handleRented(item.id)}
-          secondaryButtonText="Delete"
-          onSecondaryButtonClick={() => handleRemove(item.id)}
-        />
-      ))}
+  return (
+    <div className={styles.container}>
+      <div className={styles.header}>
+        <h2>Available Apartments ({data.length})</h2>
+        <div className={styles.sort}>
+          <p>Sort by: </p>
+          <select onChange={handleSorting}>
+            <option value="asc">Price: Cheapest first</option>
+            <option value="desc">Price: Highest first</option>
+          </select>
+        </div>
+      </div>
+
+      {data?.length ? renderList() : <p>No data</p>}
     </div>
   );
 };

@@ -21,25 +21,29 @@ export const Apartment: React.FC<Apartment> = ({
   const { title, description, price, rooms } = data;
   return (
     <div className={styles.container}>
-      <h2>{title}</h2>
-      <p>{description}</p>
-      <p>
-        <span>Price is: </span>
-        {price}
-      </p>
-      <p>
-        <span>Numbers of rooms: </span>
-        {rooms}
-      </p>
-      {primaryButtonText && onPrimaryButtonClick && (
-        <Button onClick={onPrimaryButtonClick}>{primaryButtonText}</Button>
-      )}
+      <div className={styles.infoWrapper}>
+        <h2>{title}</h2>
+        <p>{description}</p>
+        <p>
+          <span>Price is: </span>
+          {price}
+        </p>
+        <p>
+          <span>Number of rooms: </span>
+          {rooms}
+        </p>
+      </div>
+      <div className={styles.buttonsWrapper}>
+        {primaryButtonText && onPrimaryButtonClick && (
+          <Button onClick={onPrimaryButtonClick}>{primaryButtonText}</Button>
+        )}
 
-      {onSecondaryButtonClick && (
-        <Button isPrimary={false} onClick={onSecondaryButtonClick}>
-          {secondaryButtonText}
-        </Button>
-      )}
+        {onSecondaryButtonClick && (
+          <Button isPrimary={false} onClick={onSecondaryButtonClick}>
+            {secondaryButtonText}
+          </Button>
+        )}
+      </div>
     </div>
   );
 };
