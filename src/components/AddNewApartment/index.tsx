@@ -17,8 +17,8 @@ export const AddNewApartment = () => {
   const {
     handleSubmit,
     register,
-    reset
-    // formState: { errors }
+    reset,
+    formState: { errors }
   } = useForm<FormData>();
 
   const onSubmit: SubmitHandler<FormData> = (data) => {
@@ -40,12 +40,13 @@ export const AddNewApartment = () => {
             Title
           </label>
           <input
-            {...register("title", { required: true })}
+            {...register("title", { required: "Title is required" })}
             type="text"
             name="title"
             className={styles.input}
             placeholder="Ex. Flat in the city center"
           />
+          <p className={styles.error}>{errors.title?.message}</p>
         </div>
 
         <div className={styles.description}>
@@ -53,11 +54,14 @@ export const AddNewApartment = () => {
             Description
           </label>
           <textarea
-            {...register("description", { required: true })}
+            {...register("description", {
+              required: "Description is required"
+            })}
             name="description"
             className={styles.input}
             placeholder="Some words about the apartment..."
           />
+          <p className={styles.error}>{errors.description?.message}</p>
         </div>
 
         <div className={styles.details}>
@@ -83,12 +87,19 @@ export const AddNewApartment = () => {
               Rent Price
             </label>
             <input
-              {...register("price", { required: true })}
+              {...register("price", {
+                required: '"Rent price" is required',
+                pattern: {
+                  value: /^[0-9]+(\.[0-9]{1,2})?$/,
+                  message: "Invalid price"
+                }
+              })}
               type="text"
               name="price"
               className={styles.input}
               placeholder="99.00"
             />
+            <p className={styles.error}>{errors.price?.message}</p>
           </div>
         </div>
         <button className={styles.button}>Submit rent</button>
