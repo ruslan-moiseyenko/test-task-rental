@@ -13,6 +13,8 @@
   width: 100%;
   padding: 20px;
   background-color: aliceblue;
+
+  overflow: hidden;
 }
 
 .title {
@@ -34,13 +36,15 @@
   border: 1px solid var(--border-color);
   border-radius: 4px;
 
+  resize: vertical;
+
   &::placeholder {
     color: var(--border-color);
   }
 }
 
 .description {
-  width: 50%;
+  width: 80%;
 }
 
 .days {

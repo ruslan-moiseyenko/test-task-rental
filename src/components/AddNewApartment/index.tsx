@@ -60,6 +60,7 @@ export const AddNewApartment = () => {
             name="description"
             className={styles.input}
             placeholder="Some words about the apartment..."
+            rows={5}
           />
           <p className={styles.error}>{errors.description?.message}</p>
         </div>

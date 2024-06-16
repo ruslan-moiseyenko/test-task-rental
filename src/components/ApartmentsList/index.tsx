@@ -5,21 +5,17 @@ import React, {
   useMemo,
   useState
 } from "react";
-// import { RoomData } from "../../types/types";
+
 import { Apartment } from "../Apartment";
 import { AppContext, AppContextType } from "../../App";
-
 import styles from "./styles.module.css";
-
-// type ApartmentsListProps = {
-//   data: RoomData[];
-// };
 
 export const ApartmentsList = () => {
   const { freeApartments, setFreeApartments, setRentedApartments } = useContext(
     AppContext!
   ) as AppContextType;
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+  const [filter, setFilter] = useState<string>("0");
 
   const sortedData = useMemo(() => {
     if (!freeApartments.length) return [];
@@ -71,19 +67,31 @@ export const ApartmentsList = () => {
     },
     [freeApartments, setRentedApartments, setFreeApartments]
   );
+
+  const handleFilter = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setFilter(event.target.value);
+    },
+    []
+  );
+
   const renderList = () => {
     return (
       <div className={styles.listWrapper}>
-        {freeApartments.map((item) => (
-          <Apartment
-            key={item.id}
-            data={item || {}}
-            primaryButtonText="Rent"
-            onPrimaryButtonClick={() => handleRented(item.id)}
-            secondaryButtonText="Delete"
-            onSecondaryButtonClick={() => handleRemove(item.id)}
-          />
-        ))}
+        {freeApartments
+          .filter((item) =>
+            filter === "0" ? true : item.rooms.toString() === filter
+          )
+          .map((item) => (
+            <Apartment
+              key={item.id}
+              data={item || {}}
+              primaryButtonText="Rent"
+              onPrimaryButtonClick={() => handleRented(item.id)}
+              secondaryButtonText="Delete"
+              onSecondaryButtonClick={() => handleRemove(item.id)}
+            />
+          ))}
       </div>
     );
   };
@@ -93,6 +101,13 @@ export const ApartmentsList = () => {
       <div className={styles.header}>
         <h2>Available Apartments ({freeApartments.length})</h2>
         <div className={styles.sort}>
+          <p>Filter by: </p>
+          <select onChange={handleFilter}>
+            <option value="0">Rooms: All</option>
+            <option value="1">Rooms: 1</option>
+            <option value="2">Rooms: 2</option>
+            <option value="3">Rooms: 3+</option>
+          </select>
           <p>Sort by: </p>
           <select onChange={handleSorting}>
             <option value="asc">Price: Cheapest first</option>
