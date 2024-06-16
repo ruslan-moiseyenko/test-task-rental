@@ -1,30 +1,47 @@
-import React, { FC, useCallback, useContext, useEffect } from "react";
-import { RoomData } from "../../types/types";
+import React, {
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useState
+} from "react";
+// import { RoomData } from "../../types/types";
 import { Apartment } from "../Apartment";
 import { AppContext, AppContextType } from "../../App";
 
 import styles from "./styles.module.css";
 
-type ApartmentsListProps = {
-  data: RoomData[];
-};
+// type ApartmentsListProps = {
+//   data: RoomData[];
+// };
 
-export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
-  const { setFreeApartments, setRentedApartments } = useContext(
+export const ApartmentsList = () => {
+  const { freeApartments, setFreeApartments, setRentedApartments } = useContext(
     AppContext!
   ) as AppContextType;
-  const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("asc");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
 
-  const sortedData = React.useMemo(() => {
-    return [...data].sort((a, b) =>
+  const sortedData = useMemo(() => {
+    if (!freeApartments.length) return [];
+    return [...freeApartments].sort((a, b) =>
       sortOrder === "asc" ? a.price - b.price : b.price - a.price
     );
-  }, [data, sortOrder]);
+  }, [freeApartments, sortOrder]);
 
   useEffect(() => {
-    if (!sortedData.length) return;
-    setFreeApartments(sortedData);
-  }, [sortedData, setFreeApartments]);
+    if (!freeApartments.length) return;
+    setFreeApartments((prev) => {
+      const isDifferent =
+        prev.length !== sortedData.length ||
+        prev.some(
+          (apartment, index) => apartment.price !== sortedData[index].price
+        );
+      if (isDifferent) {
+        return sortedData;
+      }
+      return prev;
+    });
+  }, [freeApartments, setFreeApartments, sortedData]);
 
   const handleSorting = useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -46,18 +63,18 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
     (id: string) => {
       setRentedApartments((prevData) => [
         ...prevData,
-        data.find((item) => item.id === id)!
+        freeApartments.find((item) => item.id === id)!
       ]);
       setFreeApartments((prevData) =>
         prevData.filter((item) => item.id !== id)
       );
     },
-    [data, setRentedApartments, setFreeApartments]
+    [freeApartments, setRentedApartments, setFreeApartments]
   );
   const renderList = () => {
     return (
       <div className={styles.listWrapper}>
-        {data.map((item) => (
+        {freeApartments.map((item) => (
           <Apartment
             key={item.id}
             data={item || {}}
@@ -74,7 +91,7 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <h2>Available Apartments ({data.length})</h2>
+        <h2>Available Apartments ({freeApartments.length})</h2>
         <div className={styles.sort}>
           <p>Sort by: </p>
           <select onChange={handleSorting}>
@@ -84,7 +101,7 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
         </div>
       </div>
 
-      {data?.length ? renderList() : <p>No data</p>}
+      {freeApartments?.length ? renderList() : <p>No data</p>}
     </div>
   );
 };

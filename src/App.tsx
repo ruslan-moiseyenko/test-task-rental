@@ -52,7 +52,7 @@ function App() {
         <AddNewApartment />
         <RentedApartmentsList />
 
-        <ApartmentsList data={freeApartments} />
+        <ApartmentsList />
       </main>
     </AppContext.Provider>
   );
