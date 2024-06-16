@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useCallback, useContext, useEffect } from "react";
 import { RoomData } from "../../types/types";
 import { Apartment } from "../Apartment";
 import { AppContext, AppContextType } from "../../App";
@@ -15,33 +15,45 @@ export const ApartmentsList: FC<ApartmentsListProps> = ({ data }) => {
   ) as AppContextType;
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc">("asc");
 
-  {
-    sortOrder;
-  }
-  const handleSorting = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    if (event.target.value === "asc") {
-      const sortedData = data.sort((a, b) => a.price - b.price);
-      setFreeApartments(sortedData);
-      setSortOrder("asc");
-    } else {
-      const sortedData = data.sort((a, b) => b.price - a.price);
-      setFreeApartments(sortedData);
-      setSortOrder("desc");
-    }
-  };
+  const sortedData = React.useMemo(() => {
+    return [...data].sort((a, b) =>
+      sortOrder === "asc" ? a.price - b.price : b.price - a.price
+    );
+  }, [data, sortOrder]);
 
-  const handleRemove = (id: string) => {
-    setFreeApartments((prevData) => prevData.filter((item) => item.id !== id));
-  };
+  useEffect(() => {
+    if (!sortedData.length) return;
+    setFreeApartments(sortedData);
+  }, [sortedData, setFreeApartments]);
 
-  const handleRented = (id: string) => {
-    setRentedApartments((prevData) => [
-      ...prevData,
-      data.find((item) => item.id === id)!
-    ]);
-    setFreeApartments((prevData) => prevData.filter((item) => item.id !== id));
-  };
+  const handleSorting = useCallback(
+    (event: React.ChangeEvent<HTMLSelectElement>) => {
+      setSortOrder(event.target.value as "asc" | "desc");
+    },
+    []
+  );
 
+  const handleRemove = useCallback(
+    (id: string) => {
+      setFreeApartments((prevData) =>
+        prevData.filter((item) => item.id !== id)
+      );
+    },
+    [setFreeApartments]
+  );
+
+  const handleRented = useCallback(
+    (id: string) => {
+      setRentedApartments((prevData) => [
+        ...prevData,
+        data.find((item) => item.id === id)!
+      ]);
+      setFreeApartments((prevData) =>
+        prevData.filter((item) => item.id !== id)
+      );
+    },
+    [data, setRentedApartments, setFreeApartments]
+  );
   const renderList = () => {
     return (
       <div className={styles.listWrapper}>
